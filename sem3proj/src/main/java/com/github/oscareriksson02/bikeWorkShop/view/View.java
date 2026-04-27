@@ -14,10 +14,12 @@ public class View {
         this.contr = controller;
     }
 
-    private void searchCustomer(String number)
+    public void searchCustomer(String number)
     {
         CustomerDTO cust = contr.searchCustomer(number);
-        // Print cust
+        System.out.print(cust);
     }
+
+    
 
 }

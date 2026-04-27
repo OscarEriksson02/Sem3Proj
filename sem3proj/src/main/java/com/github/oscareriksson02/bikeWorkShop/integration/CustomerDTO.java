@@ -26,6 +26,13 @@ public class CustomerDTO {
         this.adressDTO = adressDTO;
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + customerID + ", Name: " + fullName + 
+        ", Email: " + email + ", Phone: " + phoneNumber + "\n " + bikeDTO +
+        "\n" + adressDTO + "\n";
+    }
+
     public String getCustomerID() {
         return customerID;
     }
