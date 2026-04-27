@@ -17,9 +17,15 @@ public class View {
     public void searchCustomer(String number)
     {
         CustomerDTO cust = contr.searchCustomer(number);
-        System.out.print(cust);
+        if (cust != null) {
+            System.out.println(cust);
+        }
+        else {
+            System.out.println("Customer doesn't exist");
+        }
+        
     }
 
-    
+
 
 }

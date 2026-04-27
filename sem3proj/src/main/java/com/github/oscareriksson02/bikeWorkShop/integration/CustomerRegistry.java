@@ -15,9 +15,10 @@ public class CustomerRegistry {
      * 
      */
     public CustomerRegistry() {
-        BikeDTO cykel = new BikeDTO("centurion", "Super Le Mans", "1983");
+        BikeDTO cykel = new BikeDTO("Centurion", "Super Le Mans", "1983");
         AdressDTO adress = new AdressDTO("Hittepåvägen 34", "12345", "Stockholm");
         CustomerDTO kalle = new CustomerDTO("1", "Kalle Jansson", "kalle@jansson", "0701234567", cykel, adress);
+
 
         customers.add(kalle);
     }
