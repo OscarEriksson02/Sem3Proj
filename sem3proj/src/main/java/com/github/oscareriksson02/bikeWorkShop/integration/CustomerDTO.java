@@ -45,7 +45,7 @@ public class CustomerDTO {
         return bikeDTO;
     }
 
-    public AddressDTO getAdressDTO() {
+    public AdressDTO getAdressDTO() {
         return adressDTO;
     }
 }
