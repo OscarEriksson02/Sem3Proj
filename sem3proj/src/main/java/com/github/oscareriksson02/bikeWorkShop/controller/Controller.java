@@ -29,7 +29,7 @@ public class Controller {
 
     public CustomerDTO searchCustomer(String number)
     {
-        CustomerDTO cust = new CustomerRegistry.searchCustomer(number);
+        CustomerDTO cust = customerRegistry.searchCustomer(number);
         return cust;
     }
 
