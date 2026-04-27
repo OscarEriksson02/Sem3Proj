@@ -1,5 +1,4 @@
 package com.github.oscareriksson02.bikeWorkShop.integration;
-
 import com.github.oscareriksson02.bikeWorkShop.integration.BikeDTO;
 
 /**
@@ -45,7 +44,7 @@ public class CustomerDTO {
         return bikeDTO;
     }
 
-    public AddressDTO getAdressDTO() {
+    public AdressDTO getAdressDTO() {
         return adressDTO;
     }
 }
