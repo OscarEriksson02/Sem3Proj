@@ -9,4 +9,17 @@ import java.util.List;
  */
 public class CustomerRegistry {
     private List<CustomerDTO> customers = new ArrayList<>();
+    
+    /**
+     * This methood returns CustomerDTO with the given number. if none is found it returns null.
+     * @param number
+     * @return
+     */
+    public CustomerDTO searchCustomer(String number) {
+        for (CustomerDTO customerDTO : customers) {
+            if(customerDTO.getPhoneNumber().equals(number))
+                return customerDTO;
+        }
+        return null;
+    }    
 }

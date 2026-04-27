@@ -16,7 +16,7 @@ public class View {
 
     private void searchCustomer(String number)
     {
-        CustomerDTO cust = new Controller.searchCustomer(number);
+        CustomerDTO cust = contr.searchCustomer(number);
         // Print cust
     }
 
