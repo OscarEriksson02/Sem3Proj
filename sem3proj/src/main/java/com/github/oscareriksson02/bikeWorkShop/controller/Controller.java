@@ -1,7 +1,7 @@
 package com.github.oscareriksson02.bikeWorkShop.controller;
 
 import com.github.oscareriksson02.bikeWorkShop.integration.RegistryCreator;
-
+import com.github.oscareriksson02.bikeWorkShop.integration.CustomerDTO;
 import com.github.oscareriksson02.bikeWorkShop.integration.CustomerRegistry;
 import com.github.oscareriksson02.bikeWorkShop.integration.OrderRegistry;
 import com.github.oscareriksson02.bikeWorkShop.controller.Controller;
@@ -25,6 +25,12 @@ public class Controller {
         this.customerRegistry = creator.getCustomerRegistry();
         this.orderRegistry = creator.getOrderRegistry();
         this.printer = printer;
+    }
+
+    public CustomerDTO searchCustomer(String number)
+    {
+        CustomerDTO cust = new CustomerDTO();
+        return cust;
     }
 
 }
