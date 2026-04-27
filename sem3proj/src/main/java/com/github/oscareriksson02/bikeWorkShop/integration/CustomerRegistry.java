@@ -1,5 +1,4 @@
 package com.github.oscareriksson02.bikeWorkShop.integration;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,19 @@ import java.util.List;
 public class CustomerRegistry {
     private List<CustomerDTO> customers = new ArrayList<>();
     
+   
+    /**
+     * Constructor that adds a customer for testing
+     * 
+     */
+    private CustomerRegistry() {
+        BikeDTO cykel = new BikeDTO("centurion", "Super Le Mans", "1983");
+        AdressDTO adress = new AdressDTO("Hittepåvägen 34", "12345", "Stockholm");
+        CustomerDTO kalle = new CustomerDTO("1", "Kalle Jansson", "kalle@jansson", "0701234567", cykel, adress);
+
+        customers.add(kalle);
+    }
+
     /**
      * This methood returns CustomerDTO with the given number. if none is found it returns null.
      * @param number
