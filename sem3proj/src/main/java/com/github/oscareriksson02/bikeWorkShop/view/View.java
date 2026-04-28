@@ -13,7 +13,11 @@ public class View {
     public View(Controller controller) {
         this.contr = controller;
     }
-
+    
+    /**
+     * Searches customer via number and prints out full details
+     * @param number
+     */
     public void searchCustomer(String number)
     {
         CustomerDTO cust = contr.searchCustomer(number);
