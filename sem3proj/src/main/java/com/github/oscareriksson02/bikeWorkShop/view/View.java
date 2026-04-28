@@ -34,13 +34,11 @@ public class View {
         
     }
 
-<<<<<<< HEAD
-    private void findOrdersByState(int state) {
-        List<OrderDTO> orders = Controller.findOrdersByState(state);
+    public void printOrdersByState(int state) {
+        List<OrderDTO> orders = contr.findOrdersByState(state);
         
+        for (OrderDTO orderDTO : orders) {
+            System.out.println(orderDTO);
+        }
     }
-=======
-
-
->>>>>>> a88f5aa63541c275859d8b76739a50787e6074b0
 }

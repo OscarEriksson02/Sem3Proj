@@ -24,6 +24,13 @@ public class OrderDTO {
         this.estimatedTimeOfCompletion = estimatedTimeOfCompletion;
 }
 
+    @Override
+    public String toString() {
+        return "OrderID: " + orderID + ", Date Of Creation: " + dateOfCreation + 
+        "\n" + "CustomerDTO: " + customerDTO+ 
+        "\n" + "Problem description: " + problemDescription + ", State: " + state + ", Repair tasks: " + repairTasks + ", Estimated time of completion: " + estimatedTimeOfCompletion;  
+    }
+
     public int getOrderID() {
         return orderID;
     }

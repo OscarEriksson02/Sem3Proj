@@ -9,7 +9,6 @@ import com.github.oscareriksson02.bikeWorkShop.controller.Controller;
 import com.github.oscareriksson02.bikeWorkShop.integration.Printer;
 
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * This class is responsible for controlling the flow of the application.
@@ -31,20 +30,13 @@ public class Controller {
         this.printer = printer;
     }
 
-    /**
-     * Searches customer via number and returns CustomerDTO
-     * @param number
-     * @return CustomerDTO
-     */
-
     public CustomerDTO searchCustomer(String number)
     {
-        CustomerDTO cust = customerRegistry.searchCustomer(number);
-        return cust;
+        return customerRegistry.searchCustomer(number);
     }
 
     public List<OrderDTO> findOrdersByState(int state) {
-
+        return orderRegistry.findOrdersByState(state);
     }
 
 }

@@ -19,7 +19,6 @@ public class CustomerRegistry {
         AdressDTO adress = new AdressDTO("Hittepåvägen 34", "12345", "Stockholm");
         CustomerDTO kalle = new CustomerDTO("1", "Kalle Jansson", "kalle@jansson", "0701234567", cykel, adress);
 
-
         customers.add(kalle);
     }
 

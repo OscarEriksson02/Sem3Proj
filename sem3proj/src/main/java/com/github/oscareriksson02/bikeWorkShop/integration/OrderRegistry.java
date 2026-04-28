@@ -9,9 +9,24 @@ import java.util.List;
  */
 public class OrderRegistry {
     private List<OrderDTO> orders = new ArrayList<>();
-    
-    public List<OrderDTO> findOrdersByState() {
-        
+
+    public OrderRegistry() {
+        OrderDTO kallesOrder= new OrderDTO(1, "dagens datum", null, "Punkterat bakdäck", 1, "Byt innertub backdäck", "datum här");
+        orders.add(kallesOrder);
+    }
+
+    public List<OrderDTO> findOrdersByState(int state) {
+
+        List<OrderDTO> orderStateMatches = new ArrayList<>();
+
+        for(OrderDTO orderDTO : orders) {
+            if(orderDTO.getState() == state) {
+                orderStateMatches.add(orderDTO);
+            }
+
+        }
+        return orderStateMatches;
+
     }
 
 }

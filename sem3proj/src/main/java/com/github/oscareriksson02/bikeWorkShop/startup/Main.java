@@ -20,9 +20,8 @@ public class Main {
         Controller contr = new Controller(creator, printer);
         View view = new View(contr);
 
-        view.searchCustomer("0701234547");
+        //view.searchCustomer("0701234567");
+        view.printOrdersByState(1);
+
     }
-
-    
-
 }
