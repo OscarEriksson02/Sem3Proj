@@ -10,4 +10,8 @@ import java.util.List;
 public class OrderRegistry {
     private List<OrderDTO> orders = new ArrayList<>();
     
+    public List<OrderDTO> findOrdersByState() {
+        
+    }
+
 }

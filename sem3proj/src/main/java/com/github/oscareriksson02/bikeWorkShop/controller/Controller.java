@@ -2,10 +2,14 @@ package com.github.oscareriksson02.bikeWorkShop.controller;
 
 import com.github.oscareriksson02.bikeWorkShop.integration.RegistryCreator;
 import com.github.oscareriksson02.bikeWorkShop.integration.CustomerDTO;
+import com.github.oscareriksson02.bikeWorkShop.integration.OrderDTO;
 import com.github.oscareriksson02.bikeWorkShop.integration.CustomerRegistry;
 import com.github.oscareriksson02.bikeWorkShop.integration.OrderRegistry;
 import com.github.oscareriksson02.bikeWorkShop.controller.Controller;
 import com.github.oscareriksson02.bikeWorkShop.integration.Printer;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * This class is responsible for controlling the flow of the application.
@@ -31,6 +35,10 @@ public class Controller {
     {
         CustomerDTO cust = customerRegistry.searchCustomer(number);
         return cust;
+    }
+
+    public List<OrderDTO> findOrdersByState(int state) {
+
     }
 
 }
