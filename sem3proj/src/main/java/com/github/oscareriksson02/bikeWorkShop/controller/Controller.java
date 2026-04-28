@@ -30,6 +30,10 @@ public class Controller {
         this.printer = printer;
     }
 
+
+    /**
+     * Returns customer with given number from customerRegistry.
+     */
     public CustomerDTO searchCustomer(String number)
     {
         return customerRegistry.searchCustomer(number);
