@@ -35,6 +35,16 @@ public class Controller {
         return customerRegistry.searchCustomer(number);
     }
 
+    /**
+     * Returns orderId from newly created repairOrder
+     * @param phoneNumber
+     * @param problemDescription
+     * @return orderId
+     */
+    public int createNewRepairOrder(String phoneNumber, String problemDescription) {
+        return orderRegistry.createNewRepairOrder(phoneNumber, problemDescription);
+    }
+
     public List<OrderDTO> findOrdersByState(int state) {
         return orderRegistry.findOrdersByState(state);
     }
