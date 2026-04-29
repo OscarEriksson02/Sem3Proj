@@ -12,6 +12,7 @@ public class OrderDTO {
     private LocalDate dateOfCreation;
     private CustomerDTO customerDTO;
     private String problemDescription;
+    private int totalCost;
     private String state;
     private List<RepairTaskDTO> repairTasks = new ArrayList<>();
     private String estimatedTimeOfCompletion;
@@ -30,7 +31,7 @@ public class OrderDTO {
     public String toString() {
         return "OrderID: " + orderID + ", Date Of Creation: " + dateOfCreation + 
         "\n" + "CustomerDTO: " + customerDTO+ 
-        "\n" + "Problem description: " + problemDescription + ", State: " + state + ", Repair tasks: " + repairTasks + ", Estimated time of completion: " + estimatedTimeOfCompletion;  
+        "\n" + "Problem description: " + problemDescription + ", State: " + state + ", Repair tasks: " + repairTasks + "Total Cost: " + totalCost + ", Estimated time of completion: " + estimatedTimeOfCompletion;  
     }
 
     public int getOrderID() {
@@ -59,6 +60,10 @@ public class OrderDTO {
 
     public String getEstimatedTimeOfCompletion() {
         return estimatedTimeOfCompletion;
+    }
+
+    public void addRepairTask(RepairTaskDTO repairTask) {
+        repairTasks.add(repairTask);
     }
 }
 
