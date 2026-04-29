@@ -20,8 +20,9 @@ public class Main {
         Controller contr = new Controller(creator, printer);
         View view = new View(contr);
 
-        //view.searchCustomer("0701234567");
-        view.printOrdersByState(1);
+        view.searchCustomer("0701234567");
+        view.createRepairOrder("0701234567", "Punkterat bakdäck");
+        view.printOrdersByState("Newly Created");
 
     }
 }

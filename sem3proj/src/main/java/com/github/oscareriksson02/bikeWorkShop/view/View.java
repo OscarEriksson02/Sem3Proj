@@ -1,6 +1,5 @@
 package com.github.oscareriksson02.bikeWorkShop.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.github.oscareriksson02.bikeWorkShop.controller.Controller;
@@ -34,13 +33,25 @@ public class View {
     }
 
     /**
-     * Prints all ordersDTO:s in order registry with matching state value.
+     * The function prints out an orderId after creating a new repair order
+     * @param phoneNumber
+     * @param problemDescription
      */
-    public void printOrdersByState(int state) {
+    public void createRepairOrder(String phoneNumber, String problemDescription) {
+        int orderId = contr.createNewRepairOrder(phoneNumber, problemDescription);
+        System.out.println("Customers Order Id: " + orderId);
+    }
+    
+    /**
+    * Prints all ordersDTO:s in order registry with matching state value.
+    */
+    public void printOrdersByState(String state) {
         List<OrderDTO> orders = contr.findOrdersByState(state);
         
         for (OrderDTO orderDTO : orders) {
             System.out.println(orderDTO);
         }
     }
+
+    
 }

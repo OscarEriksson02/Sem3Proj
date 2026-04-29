@@ -8,20 +8,23 @@ import java.util.List;
  * It will be used by the controller to add and retrieve orders from the system.
  */
 public class OrderRegistry {
-    private List<OrderDTO> orders = new ArrayList<>();
+    private List<OrderDTO> orders;
+    private CustomerRegistry cusReg;
+    private int counter;
 
-    public OrderRegistry() {
-        OrderDTO kallesOrder= new OrderDTO(1, "dagens datum", null, "Punkterat bakdäck", 1, "Byt innertub backdäck", "datum här");
-        orders.add(kallesOrder);
+
+    private int generateOrderId(int counter) {
+        return counter + 1;
     }
 
-    /**
-     * Returns all ordersDTO:s in order registry with matching state value as list.
-     * 
-     * @param state order state represent progress of the order.
-     * @return List of matched orders.
-     */
-    public List<OrderDTO> findOrdersByState(int state) {
+    public OrderRegistry() {
+       cusReg = new CustomerRegistry();
+       orders = new ArrayList<>();
+       counter = 0;
+    }
+
+
+    public List<OrderDTO> findOrdersByState(String state) {
 
         List<OrderDTO> orderStateMatches = new ArrayList<>();
 
@@ -31,6 +34,18 @@ public class OrderRegistry {
             }
         }
         return orderStateMatches;
+    }
+
+    public int createNewRepairOrder(String phoneNumber, String problemDescription) {
+        int orderID = generateOrderId(counter);
+
+        CustomerDTO customer = cusReg.searchCustomer(phoneNumber);
+        OrderDTO repairOrder = new OrderDTO(orderID, customer, problemDescription);
+        orders.add(repairOrder);
+        counter++;
+
+        return repairOrder.getOrderID();
+
     }
 
 }

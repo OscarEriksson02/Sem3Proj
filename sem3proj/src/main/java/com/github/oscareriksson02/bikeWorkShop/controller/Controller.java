@@ -40,9 +40,21 @@ public class Controller {
     }
 
     /**
-     * Returns all ordersDTO:s in order registry with matching state value as list.
+     * Returns orderId from newly created repairOrder
+     * @param phoneNumber
+     * @param problemDescription
+     * @return orderId
      */
-    public List<OrderDTO> findOrdersByState(int state) {
+    public int createNewRepairOrder(String phoneNumber, String problemDescription) {
+        return orderRegistry.createNewRepairOrder(phoneNumber, problemDescription);
+    }
+
+    /**
+     * Returns all ordersDTO:s in order registry with matching state value as list.
+     * @param state State of oreder completion
+     * @return List of matching order DTO:s
+     */
+    public List<OrderDTO> findOrdersByState(String state) {
         return orderRegistry.findOrdersByState(state);
     }
 
