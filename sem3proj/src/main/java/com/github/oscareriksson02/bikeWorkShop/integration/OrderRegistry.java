@@ -3,6 +3,7 @@ package com.github.oscareriksson02.bikeWorkShop.integration;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * This class is responsible for storing the orders in the system.
  * It will be used by the controller to add and retrieve orders from the system.
@@ -13,7 +14,7 @@ public class OrderRegistry {
     private int counter;
 
 
-    private int generateOrderId(int counter) {
+    private int generateOrderId() {
         return counter + 1;
     }
 
@@ -39,7 +40,7 @@ public class OrderRegistry {
     }
 
     public int createNewRepairOrder(String phoneNumber, String problemDescription) {
-        int orderID = generateOrderId(counter);
+        int orderID = generateOrderId();
 
         CustomerDTO customer = cusReg.searchCustomer(phoneNumber);
         OrderDTO repairOrder = new OrderDTO(orderID, customer, problemDescription);
@@ -48,6 +49,18 @@ public class OrderRegistry {
 
         return repairOrder.getOrderID();
 
+    }
+
+    public OrderDTO findOrderById(int orderId){
+        for (OrderDTO orderDTO : orders) {
+            if (orderDTO.getOrderID() == orderId) {
+                return orderDTO;
+            } 
+        }
+
+        System.out.println("Order: " + orderId + " does not exist.");
+        return null;
+        
     }
 
 }
