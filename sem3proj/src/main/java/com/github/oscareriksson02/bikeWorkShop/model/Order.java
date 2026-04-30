@@ -38,9 +38,6 @@ public class Order {
         return totalCost;
     }
 
-    public void acceptRepairOrder() {
-        this.state = "Order Accepted";
-    }
 
 
 
