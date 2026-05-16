@@ -3,9 +3,10 @@ package com.github.oscareriksson02.bikeWorkShop.view;
 import java.util.List;
 
 import com.github.oscareriksson02.bikeWorkShop.controller.Controller;
-import com.github.oscareriksson02.bikeWorkShop.integration.CustomerDTO;
 import com.github.oscareriksson02.bikeWorkShop.integration.OrderDTO;
+import com.github.oscareriksson02.bikeWorkShop.model.CustomerNotFoundException;
 import com.github.oscareriksson02.bikeWorkShop.model.OrderState;
+import com.github.oscareriksson02.bikeWorkShop.model.SystemFailureException;
 /**
  * This class is responsible for displaying the user interface for the customer.
  * It will be used by the controller to display the user interface for the customer.
@@ -17,19 +18,36 @@ public class View {
     public View(Controller controller) {
         this.contr = controller;
     }
+
+    /**
+     * Method is responsible for stimulating the repair task flow
+     */
+    public void run() {
+        if (!searchCustomer("0701234567")) return;
+        createRepairOrder("0701234567", "Punkterat bakdäck och en gnällig kedja");
+        //printOrdersByState(OrderState.NEWLY_CREATED);
+        addRepairTask(1, "Byt däcktub", 400);
+        addRepairTask(1, "Byt kedja", 450);
+        addRepairTask(1, "Smörj kedja", 100);
+        addDiagnosticReport(1, "Vi kommer ta alla dina pengar", "2026-09-30");
+        acceptRepairOrder(1);
+    }
     
     /**
      * Searches customer via number and prints out full details
      * @param number
      */
-    public void searchCustomer(String number)
-    {
-        CustomerDTO cust = contr.searchCustomer(number);
-        if (cust != null) {
-            System.out.println(cust);
-        }
-        else {
-            System.out.println("Customer doesn't exist");
+   public boolean searchCustomer(String number) {
+        try {
+            System.out.println("\n========== CUSTOMER DETAILS ==========");
+            System.out.println(contr.searchCustomer(number));
+            System.out.println("======================================");
+            return true;
+        } catch (CustomerNotFoundException | SystemFailureException e) {
+            System.out.println("\n========== ERROR ==========");
+            System.out.println(e.getMessage());
+            System.out.println("===========================");
+            return false;
         }
     }
 
@@ -38,20 +56,26 @@ public class View {
      * @param phoneNumber
      * @param problemDescription
      */
+    
     public void createRepairOrder(String phoneNumber, String problemDescription) {
         int orderId = contr.createNewRepairOrder(phoneNumber, problemDescription);
-        System.out.println("Customers Order Id: " + orderId + "\n");
+        System.out.println("\n========== REPAIR ORDER CREATED ==========");
+        System.out.println("Order ID: " + orderId);
+        System.out.println("==========================================");
     }
+
     
     /**
     * Prints all ordersDTO:s in order registry with matching state value.
     */
     public void printOrdersByState(OrderState state) {
         List<OrderDTO> orders = contr.findOrdersByState(state);
-        
+        System.out.println("\n========== ORDERS WITH STATE: " + state + " ==========");
         for (OrderDTO orderDTO : orders) {
             System.out.println(orderDTO);
+            System.out.println("------------------------------------------");
         }
+        System.out.println("=============================================");
     }
 
     /**
@@ -82,11 +106,10 @@ public class View {
      * @param orderId
      */
 
-    public void acceptRepairOrder(int orderId) {
-        System.out.println("\n-----------------------------------------");
-        System.out.println("Order accepted, printing out order.");
-        System.out.println("-----------------------------------------");
+  public void acceptRepairOrder(int orderId) {
+        System.out.println("\n========== ORDER ACCEPTED ==========");
         contr.acceptRepairOrder(orderId);
+        System.out.println("====================================");
     }
 
     /**

@@ -1,5 +1,8 @@
 package com.github.oscareriksson02.bikeWorkShop.model;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import com.github.oscareriksson02.bikeWorkShop.integration.OrderDTO;
 import com.github.oscareriksson02.bikeWorkShop.integration.OrderRegistry;
 import com.github.oscareriksson02.bikeWorkShop.integration.RepairTaskDTO;
@@ -7,6 +10,7 @@ import com.github.oscareriksson02.bikeWorkShop.integration.RepairTaskDTO;
 public class Order {
    private OrderDTO orderDTO;
    private OrderRegistry orderRegistry;
+   private List<RepairOrderObserver> observers = new ArrayList<>();
    
 
   
@@ -36,6 +40,10 @@ public class Order {
 
         updateOrderDTO(orderDTO.getOrderID(), updateOrderDTO);
         
+    }
+
+    public int getTotalCost() {
+        return orderDTO.getTotalCost();
     }
 
     /**
@@ -68,14 +76,20 @@ public class Order {
 
     /**
      * Updates orderstate to ACCEPTED by creating a new DTO and replacing the old one in order registry
+     * Applys discount to total cost every third repair. 
      */
-    public void acceptRepairOrder(){
-        OrderDTO updateOrderDTO = new OrderBuilder.Builder(orderDTO)
-        .state(OrderState.ACCEPTED)
-        .build();
-
-        updateOrderDTO(orderDTO.getOrderID(), updateOrderDTO);
+    public void acceptRepairOrder(DiscountStrategy discountStrategy) {
+        int discountedCost = discountStrategy.applyDiscount(orderDTO.getTotalCost());
+        OrderDTO updatedOrderDTO = new OrderBuilder.Builder(orderDTO)
+            .totalCost(discountedCost)
+            .state(OrderState.ACCEPTED)
+            .build();
+        updateOrderDTO(orderDTO.getOrderID(), updatedOrderDTO);
     }
+
+    /**
+     * Updates repaiOrder state to rejected
+     */
 
     public void rejectRepairOrder(){
         OrderDTO updateOrderDTO = new OrderBuilder.Builder(orderDTO)
@@ -95,6 +109,26 @@ public class Order {
     private void updateOrderDTO(int orderId, OrderDTO orderDTO) {
         orderRegistry.replaceOrderById(orderId, orderDTO);
         this.orderDTO = orderDTO;
+        notifyObservers();
+    }
+
+    /**
+     * Adds observer to Array List
+     * @param observer
+     */
+
+    public void addObserver(RepairOrderObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Notifys observers about order
+     */
+
+    public void notifyObservers() {
+        for (RepairOrderObserver observer : observers){
+            observer.onRepairOrderUpdate(orderDTO);
+        }
     }
     
 

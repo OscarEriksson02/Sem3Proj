@@ -1,15 +1,10 @@
 package com.github.oscareriksson02.bikeWorkShop.controller;
 
-import com.github.oscareriksson02.bikeWorkShop.integration.RegistryCreator;
-import com.github.oscareriksson02.bikeWorkShop.integration.CustomerDTO;
-import com.github.oscareriksson02.bikeWorkShop.integration.OrderDTO;
-import com.github.oscareriksson02.bikeWorkShop.integration.CustomerRegistry;
-import com.github.oscareriksson02.bikeWorkShop.integration.OrderRegistry;
+import com.github.oscareriksson02.bikeWorkShop.integration.*;
 import com.github.oscareriksson02.bikeWorkShop.controller.Controller;
-import com.github.oscareriksson02.bikeWorkShop.integration.Printer;
-import com.github.oscareriksson02.bikeWorkShop.model.Order;
-import com.github.oscareriksson02.bikeWorkShop.model.OrderState;
+import com.github.oscareriksson02.bikeWorkShop.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,28 +15,47 @@ public class Controller {
     private CustomerRegistry customerRegistry;
     private OrderRegistry orderRegistry;
     private Printer printer;
-    
+    private FileLogger fileLogger;
+    private List<RepairOrderObserver> observers = new ArrayList<>();
     
 
     /**
      * This is the constructor for the Controller class. It takes a RegistryCreator and a Printer as parameters and initializes the customerRegistry, orderRegistry and printer fields.
      * @param creator
      * @param printer
+     * @param fileLogger
      */
-    public Controller(RegistryCreator creator, Printer printer) {
+    public Controller(RegistryCreator creator, Printer printer, FileLogger fileLogger) {
         this.customerRegistry = creator.getCustomerRegistry();
         this.orderRegistry = creator.getOrderRegistry();
         this.printer = printer;
+        this.fileLogger = fileLogger;
     }
 
 
     /**
      * Returns customer with given number from customerRegistry.
+     * @param number
+     * @throws CustomerNotFoundException
      */
-    public CustomerDTO searchCustomer(String number)
+    public CustomerDTO searchCustomer(String number) throws CustomerNotFoundException
     {
-        return customerRegistry.searchCustomer(number);
+        try {
+            CustomerDTO cust = customerRegistry.searchCustomer(number);
+
+            if (cust != null) {
+                return cust;
+            } else {
+                throw new CustomerNotFoundException(number, "Customer does not exist");
+            }
+
+        }
+        catch (DatabaseFailureException e){
+            fileLogger.log(e);
+            throw new SystemFailureException("System failure\nContact Support", e);
+        }
     }
+
 
     /**
      * Returns orderId from newly created repairOrder
@@ -71,6 +85,7 @@ public class Controller {
 
     public void addRepairTask(int orderId, String repairTaskDescription, int cost) {
         Order order = new Order(orderId, orderRegistry);
+        registerObservers(order);
         order.addRepairTask(repairTaskDescription, cost);
     }
 
@@ -83,6 +98,7 @@ public class Controller {
 
     public void addDiagnosticReport(int orderId, String diagnosticReport, String estimatedTimeOfCompletion) {
         Order order = new Order(orderId, orderRegistry);
+        registerObservers(order);
         order.addDiagnosticReport(diagnosticReport);
         order.addEstimatedTimeOfCompletion(estimatedTimeOfCompletion);     
 
@@ -95,7 +111,13 @@ public class Controller {
 
     public void acceptRepairOrder(int orderId) {
         Order order = new Order(orderId, orderRegistry);
-        order.acceptRepairOrder();
+        registerObservers(order);
+
+        String phoneNumeber = getCustomerPhoneNumer(orderId);
+        LoyaltyDiscount loyaltyDiscount = new LoyaltyDiscount(phoneNumeber, orderRegistry);
+
+
+        order.acceptRepairOrder(loyaltyDiscount);
         printOrder(orderId);
 
     }
@@ -106,9 +128,19 @@ public class Controller {
      */
 
     public void rejectRepairOrder(int orderId) {
-         Order order = new Order(orderId, orderRegistry);
+        Order order = new Order(orderId, orderRegistry);
+        registerObservers(order);
         order.rejectRepairOrder();
         printOrder(orderId);
+    }
+
+    /**
+     * Adds observer to Array List
+     * @param observer
+     */
+
+      public void addObserver(RepairOrderObserver observer) {
+        observers.add(observer);
     }
 
     /*
@@ -119,5 +151,28 @@ public class Controller {
         OrderDTO orderDTO = orderRegistry.findOrderById(orderId);
         printer.printOrder(orderDTO);        
     }
+
+    /**
+     * Registers observers to new order object
+     * @param order
+     */
+    private void registerObservers(Order order) {
+        for (RepairOrderObserver observer : observers){
+            order.addObserver(observer);
+        }
+    }
+
+
+    /**
+     * Gets customers phone nummber
+     * @param orderid
+     * @return
+     */
+    private String getCustomerPhoneNumer(int orderid) {
+        OrderDTO order = orderRegistry.findOrderById(orderid);
+        CustomerDTO cust = order.getCustomerDTO();
+        return cust.getPhoneNumber();
+    }
+  
 
 }
